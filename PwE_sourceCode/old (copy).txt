@@ -1,0 +1,851 @@
+MainApplication:
+
+
+	/**
+	 * Encrypt View.
+	 */
+	private AnchorPane encV;
+	private Button encBaBut;
+	private ScrollPane encSc;
+	private ArrayList<PasswordField[]> encPwds;
+	private ArrayList<TextField[]> encPwdTs;
+	private ArrayList<TextField[]> encT;
+	private ArrayList<AnchorPane> encBs;
+	private CheckBox encSPwds;
+	private VBox encCon;
+	private AnchorPane pmP;
+	private Button pBut;
+	private Button mBut;
+
+	private Button saveBut;
+	private AnchorPane encMsgP;
+	private Button encAg;
+	private Button encDo;
+	private Label encErrI;
+	private Label encDoI;
+	private Button encClI;
+	private Label encDoLa;
+	private Label encWrMP;
+	private Label encMuErr;
+	private Label encExistErr;
+	private Label encMissErr;
+	private Label encNoEntry;
+	private Label encDiPws;
+	private Button encDisBut;
+	private Button encOKBut;
+	private Button encChBut;
+	private PasswordField encMPwd;
+	private TextField encMPwdT;
+	private AnchorPane encOvP;
+	private Button encOvClBut;
+	private Label encOvQuest;
+	private Label encOvNoMP;
+	private Label encOvWrMP;
+
+
+
+
+
+----------------
+
+		/**
+		 * Encrypt View.
+		 */
+		encV = VC.getNewAnP(FC.empty, 0.0, 0.0);
+
+		encBaBut = VC.getNewImBut(controller.encBaI, FC.back, FC.inWi, FC.inHe, fewLineHa);
+
+		encSc = VC.getNewScP(FC.encScAn, FC.inWi, FC.inHe);
+		encCon = new VBox();
+		encSc.setContent(encCon);
+		encSc.vvalueProperty().bind(encCon.heightProperty());
+
+		encPwds = new ArrayList<PasswordField[]>();
+		encPwdTs = new ArrayList<TextField[]>();
+		encT = new ArrayList<TextField[]>();
+		encBs = new ArrayList<AnchorPane>();
+		addNewPwdBl(FC.inWi, FC.inHe);
+
+		VC.setDisSt(true, new Node[] {encPwdTs.get(0)[0], encPwdTs.get(0)[1]});
+		VC.setVis(false, new Node[] {encPwdTs.get(0)[0], encPwdTs.get(0)[1]});
+
+		encSPwds = VC.getNewCB(names.newMPBoxN, mainFrac, FC.encBoxAn, FC.inWi, FC.inHe);
+
+		encSPwds.selectedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldVal, Boolean newVal) {
+				for(int j = 0; j < encPwds.size(); j++) {
+					if(newVal) {
+						encPwdTs.get(j)[0].setText(encPwds.get(j)[0].getText());
+						encPwdTs.get(j)[1].setText(encPwds.get(j)[1].getText());
+						VC.setNodesUnusable(new Node [] {encPwds.get(j)[0], encPwds.get(j)[1]});
+						VC.setNodesUsable(new Node[] {encPwdTs.get(j)[0], encPwdTs.get(j)[1]});
+						if(encMPwd.isVisible()) {
+							encMPwdT.setText(encMPwd.getText());
+							VC.setNodesUnusable(new Node[] {encMPwd});
+							VC.setNodesUsable(new Node[] {encMPwdT});
+						}
+					} else {
+						encPwds.get(j)[0].setText(encPwdTs.get(j)[0].getText());
+						encPwds.get(j)[1].setText(encPwdTs.get(j)[1].getText());
+						VC.setNodesUsable(new Node[] {encPwds.get(j)[0], encPwds.get(j)[1]});
+						VC.setNodesUnusable(new Node[] {encPwdTs.get(j)[0], encPwdTs.get(j)[1]});
+						if(encMPwdT.isVisible()) {
+							encMPwd.setText(encMPwdT.getText());
+							VC.setNodesUnusable(new Node[] {encMPwdT});
+							VC.setNodesUsable(new Node[] {encMPwd});
+						}
+					}
+				}
+			}
+		});
+
+		pmP = new AnchorPane();
+		pmP.setPrefSize(FC.pmWi * FC.inWi, FC.pmHe * FC.inHe);
+
+		pBut = VC.getNewImBut(controller.newPI, FC.pAn, FC.inWi, FC.inHe, oneLineHa);
+		mBut = VC.getNewImBut(controller.newMI, FC.mAn, FC.inWi, FC.inHe, fewLineHa);
+
+		saveBut = VC.getNewImBut(controller.encSI, FC.saButAn, FC.inWi, FC.inHe, encSaButHa);
+		saveBut.setBackground(null);
+
+		encAg = VC.getNewBut(names.encAgN, FC.agButAn, FC.inMT, true, encAgHa);
+		encDo = VC.getNewBut(names.encDoN, FC.doButAn, FC.inMT, true, encDoHa);
+
+		encMsgP = VC.getNewAnP(FC.encMsgAn, FC.inWi, FC.inHe);
+		encOvP = VC.getNewAnP(FC.encOvAn, FC.inWi, FC.inHe);
+
+		encErrI = VC.getNewImLa(controller.encErrI, FC.encErrAn, encMsgP.getWidth(), encMsgP.getHeight());
+		encDoI = VC.getNewImLa(controller.encDoI, FC.encErrAn, encMsgP.getWidth(), encMsgP.getHeight());
+		encClI = VC.getNewImBut(controller.encClI, FC.encClAn, encMsgP.getWidth(), encMsgP.getHeight(), oneLineHa);
+		encClI.setBackground(null);
+
+		Triple encT = new Triple(encMsgP.getWidth(), encMsgP.getHeight(), FC.butDiv);
+		Triple eoT = new Triple(encOvP.getWidth(), encOvP.getHeight(), FC.butDiv);
+
+		encDoLa = VC.getNewLa(names.encLabDo, FC.encLaAn, encT);
+		encWrMP = VC.getNewLa(names.encLabWMP, FC.encLaAn, encT);
+		encMuErr = VC.getNewLa(names.encLabMErr, FC.encLaAn, encT);
+		encExistErr = VC.getNewLa(names.encLabExErr, FC.encOvLaAn, eoT);
+		encNoEntry = VC.getNewLa(names.encNoEnt, FC.encLaAn, encT);
+		encDiPws = VC.getNewLa(names.encDiffP, FC.encLaAn, encT);
+		encMissErr = VC.getNewLa(names.encMissErr, FC.encLaAn, encT);
+
+		encOvNoMP = VC.getNewLa(names.encOvMiss, FC.encOvLaAn, eoT);
+		encOvWrMP = VC.getNewLa(names.encOvWMP, FC.encOvLaAn, eoT);
+
+		encDisBut = VC.getNewBut(names.encDisN, FC.encDisAn, FC.inMT, true, encDisHa);
+		encChBut = VC.getNewBut(names.encChN, FC.encChAn, FC.inMT, true, encChHa);
+		encOKBut = VC.getNewBut(names.encOKN, FC.encOKAn, FC.inMT, 
+				true, encOvHa);
+
+		encMPwd = VC.getNewPwdField(names.encPwdField, FC.encMPwd, FC.inMT);
+		encMPwdT = VC.getNewTField(names.encPwdField, FC.encMPwd, FC.inMT);
+
+		encOvClBut = VC.getNewImBut(controller.encOvClI, FC.encOvClAn, encOvP.getWidth(), encOvP.getHeight(), oneLineHa);
+		encOvClBut.setBackground(null);
+
+		encOvQuest = VC.getNewImLa(controller.encOvQuI, FC.encOvQuAn, encOvP.getWidth(), encOvP.getHeight());
+
+		encV.getChildren().addAll(encBaBut, encSc, encSPwds, pBut, mBut, saveBut, 
+				encMsgP, encAg, encDo, encDisBut, encChBut, encOKBut, encMPwd, encMPwdT, encOvP);
+		VC.setNodesUnusable(new Node [] {encAg, encDo, encDisBut, encChBut, encOKBut, encMPwd, encMPwdT});		
+
+
+		
+-------------
+	private EventHandler<ActionEvent> fewLineHa = fewLineEvent -> {
+		if(fewLineEvent.getSource().equals(newMPAgBut)) {
+			VC.setDisSt(false, new Node[] {newPwd, newPwdT, repNewPwd, repNewPwdT, 
+					oldPwd, oldPwdT, chPwd, genPwd, newPwdS, lockLa, newPwdValBut});
+			VC.setDisSt(true, new Node[] {newMPDoBut, newMPAgBut});
+			VC.setVis(false, new Node[] {newMPDoBut, newMPAgBut});
+			VC.setVis(true, new Node[] {newPwdValBut});
+			clNewErrP.fire();
+		} else if(fewLineEvent.getSource().equals(clUserMan)) {
+			if(userManOp) {
+				VC.clearPane(userMan);
+				userManOp = false;
+			}
+		} else if(fewLineEvent.getSource().equals(englishItem)) {
+			if(!names.language.equals(Language.ENGLISH)) {
+				names = new Names(Language.ENGLISH);
+				reComp();
+			}
+		} else if(fewLineEvent.getSource().equals(germanItem)) {
+			if(!names.language.equals(Language.GERMAN)) {
+				names = new Names(Language.GERMAN);
+				reComp();
+			}
+		} else if(fewLineEvent.getSource().equals(movClErrP)) {
+			if(menuOpVSel) {
+				VC.clearPane(movErrP);
+				encErrOcc = false;
+				decErrOccNoMP = false;
+				decErrOccNoPw = false;
+			}
+		} else if(fewLineEvent.getSource().equals(encBaBut)) {
+			encVSel = false;
+			menuOpVSel = true;
+			encAg.setDisable(false);
+			encAg.fire();
+			encAg.setDisable(true);
+			mainFrame.getChildren().clear();
+			mainFrame.getChildren().add(menuOp);
+		} else if(fewLineEvent.getSource().equals(decBaBut)) {
+			decVSel = false;
+			menuOpVSel = true;
+			mainFrame.getChildren().clear();
+			mainFrame.getChildren().add(menuOp);
+		} else if(fewLineEvent.getSource().equals(mBut)) {
+			if(encPwds.size() > 1) {
+				encBs.get(encBs.size()-1).getChildren().clear();
+				encCon.getChildren().remove(encBs.get(encBs.size()-1));
+				encPwds.remove(encPwds.size()-1);
+				encPwdTs.remove(encPwdTs.size()-1);
+				encT.remove(encT.size()-1);
+				encBs.remove(encBs.size()-1);
+			}
+		} else if(fewLineEvent.getSource().equals(menuHelp)) {
+			if(encErrOcc || decErrOccNoMP || decErrOccNoPw) {
+				VC.clearPane(movErrP);
+				encErrOcc = false;
+				decErrOccNoMP = false;
+				decErrOccNoPw = false;
+			}
+			if(!userManOp) {
+				userMan.getChildren().addAll(userManTitle, clUserMan, userManCon, manI);
+				userMan.setBorder(FC.usManBord);
+				userManOp = true;
+			}
+		} else if(fewLineEvent.getSource().equals(newMPwdBut)) {
+			encErrOcc = false;
+			decErrOccNoMP = false;
+			decErrOccNoPw = false;
+			movClErrP.fire();
+			clUserMan.fire();
+			menuOpVSel = false;
+			newMPwdVSel = true;
+			mainFrame.getChildren().clear();
+			mainFrame.getChildren().add(newMPwdView);
+		} else if(fewLineEvent.getSource().equals(clMenu)) {
+			encErrOcc = false;
+			decErrOccNoMP = false;
+			decErrOccNoPw = false;
+			movClErrP.fire();
+			clUserMan.fire();
+			menuClVSel = true;
+			menuOpVSel = false;
+			mainFrame.getChildren().clear();	
+			mainFrame.getChildren().add(menuCl);
+		} else if(fewLineEvent.getSource().equals(opMenu)) {
+			menuClVSel = false;
+			menuOpVSel = true;
+			mainFrame.getChildren().clear();
+			mainFrame.getChildren().add(menuOp);
+		}
+		resizeComponents();
+	};
+-----------
+	private EventHandler<ActionEvent> encOvHa = encOverwriteEvent -> {
+		String inp = "";
+		if(encSPwds.isSelected()) {
+			inp = encMPwdT.getText();
+		} else {
+			inp = encMPwd.getText();
+		}
+
+		if(Controller.checkUserInputMPwd(inp)) {
+			VC.clearPane(encOvP);
+
+			encMsgP.getChildren().addAll(encDoI, encClI, encDoLa);
+			VC.decoratePane(encMsgP, FC.newMPDoBord, FC.newMPDoBa);
+			encT.get(0)[0].setBackground(FC.empBa);
+
+			VC.setNodesUnusable(new Node[] {encDisBut, encOKBut, encChBut, encMPwd, encMPwdT});
+			VC.setNodesUsable(new Node[] {encAg, encDo});
+
+			VC.resetFields(new TextField[] {encMPwd, encMPwdT});
+			ArrayList<String[]> toStore = new ArrayList<String[]>();
+			for(int j = 0; j < encPwds.size(); j++) {
+				
+				String[] toAdd = new String[4];
+				toAdd[0] = encT.get(j)[0].getText();
+				toAdd[1] = encT.get(j)[1].getText();
+				toAdd[2] = encT.get(j)[2].getText();
+				if(encSPwds.isSelected()) {
+					toAdd[3] = encPwdTs.get(j)[0].getText();
+				} else {
+					toAdd[3] = encPwds.get(j)[0].getText();
+				}
+				toStore.add(toAdd);
+				
+				VC.setDisSt(true, new Node[] {encPwds.get(j)[0], encPwds.get(j)[1], encPwdTs.get(j)[0],
+						encPwdTs.get(j)[1], encT.get(j)[0], encT.get(j)[1], encT.get(j)[2], encSPwds, saveBut, pBut, mBut});
+			}		
+			resizeComponents();
+			
+			Controller.storeAndOverwrite(toStore);
+			
+		} else {
+			VC.decoratePane(encOvP, FC.newMPErrBord, FC.newMPErrBa);
+			encOvP.getChildren().clear();
+			encOvP.getChildren().addAll(encOvClBut, encOvQuest);
+
+			if(inp.equals("")) {
+				encOvP.getChildren().add(encOvNoMP);
+			} else {
+				encOvP.getChildren().add(encOvWrMP);
+				VC.resetFields(new TextField[] {encMPwd, encMPwdT});
+			}
+		} 
+	};
+
+---------------
+	private EventHandler<ActionEvent> encAgHa = encAgEvent -> {
+		VC.setDisSt(false, new Node[] {encPwds.get(0)[0], encPwds.get(0)[1], encPwdTs.get(0)[0],
+				encPwdTs.get(0)[1], encT.get(0)[0], encT.get(0)[1], encT.get(0)[2], encSPwds, saveBut, pBut, mBut, encBaBut});
+		encClI.fire();
+		while(encPwds.size() > 1) {
+			mBut.fire();
+		}	
+		VC.resetFields(new TextField[] {encPwds.get(0)[0], encPwds.get(0)[1], encPwdTs.get(0)[0],
+				encPwdTs.get(0)[1], encT.get(0)[0], encT.get(0)[1], encT.get(0)[2]});
+		VC.setNodesUnusable(new Node[] {encAg, encDo});
+		encSPwds.setSelected(false);
+	};
+-----------------
+	private EventHandler<ActionEvent> encDoHa = encDoEvent -> {
+		encAg.fire();
+		encBaBut.fire();
+		encSPwds.setSelected(false);
+	};
+-----------------
+	private EventHandler<ActionEvent> oneLineHa = oneLineEvent -> {
+		if(oneLineEvent.getSource().equals(decClI)) {
+			VC.clearPane(decMsgP);
+		} else if(oneLineEvent.getSource().equals(clNewErrP)) {
+			if(newMPwdVSel) {
+				VC.clearPane(newErrP);
+			}
+		} else if(oneLineEvent.getSource().equals(encOvClBut)) {
+			VC.clearPane(encOvP);
+		} else if(oneLineEvent.getSource().equals(encClI)) {
+			VC.clearPane(encMsgP);
+		} else if(oneLineEvent.getSource().equals(newMPDoBut)) {
+			newBaBut.fire();
+		} else if(oneLineEvent.getSource().equals(pBut)) {
+			addNewPwdBl(scene.getWidth(), scene.getHeight());
+		}
+	};	
+-----------------
+
+	private EventHandler<ActionEvent> encSaButHa = newSaveEvent -> {
+
+		encClI.fire();
+
+		for(int j = 0; j < encPwds.size(); j++) {
+			VC.setBack(FC.empBa, new TextField[] {encPwds.get(j)[0], encPwds.get(j)[1], 
+					encPwdTs.get(j)[0], encPwdTs.get(j)[1], encT.get(j)[0]});
+		}
+
+		boolean missing = false;
+		ArrayList<Integer> toCheck = new ArrayList<Integer>();
+
+		for(int j = 0; j < encPwds.size(); j++) {
+			if(encPwds.get(j)[0].getText().equals("") && encPwds.get(j)[1].getText().equals("")
+					&& encPwdTs.get(j)[0].getText().equals("") && encPwdTs.get(j)[1].getText().equals("")
+					&& encT.get(j)[0].getText().equals("") && encT.get(j)[1].getText().equals("") 
+					&& encT.get(j)[2].getText().equals("")) {
+				continue;
+			}	
+			toCheck.add(j);
+
+			String first = encT.get(j)[0].getText();
+			String second = "";
+			String third = "";
+			if(encSPwds.isSelected()) {
+				second = encPwdTs.get(j)[0].getText();
+				third = encPwdTs.get(j)[1].getText();
+			} else {
+				second = encPwds.get(j)[0].getText();
+				third = encPwds.get(j)[1].getText();
+			}
+
+			if(first.equals("")) {
+				encT.get(j)[0].setBackground(FC.errMsgBa);
+				missing = true;
+			}
+			if(second.equals("")) {
+				VC.setBack(FC.errMsgBa, new TextField[] {encPwdTs.get(j)[0], encPwds.get(j)[0]});
+				missing = true;
+			}
+			if(third.equals("")) {
+				VC.setBack(FC.errMsgBa, new TextField[] {encPwdTs.get(j)[1], encPwds.get(j)[1]});
+				missing = true;
+			}
+		}
+
+		if(missing) {
+			encMsgP.getChildren().addAll(encErrI, encClI, encMissErr);
+			VC.decoratePane(encMsgP, FC.errMsgBord, FC.errMsgBa);
+			resizeComponents();
+			return;
+		}
+
+		boolean hasDuplicates = false;
+		for(int j = 0; j < toCheck.size(); j++) {
+			for(int k = 0; k < toCheck.size(); k++) {
+				if(k == j) {
+					continue;
+				}
+				if(encT.get(toCheck.get(j))[0].getText().equals(encT.get(toCheck.get(k))[0].getText())) {
+					hasDuplicates = true;
+					VC.setBack(FC.errMsgBa, new TextField[] {encT.get(toCheck.get(j))[0], encT.get(toCheck.get(k))[0]});
+				}
+			}
+		}
+	
+		if(hasDuplicates) {
+			encMsgP.getChildren().addAll(encErrI, encClI, encMuErr);
+			VC.decoratePane(encMsgP, FC.errMsgBord, FC.errMsgBa);
+			resizeComponents();
+			return;
+		}
+
+		boolean differentPwds = false;
+		for(int j = 0; j < encPwds.size(); j++) {
+			if(toCheck.size() == 0) {
+				continue;
+			}
+			String first = "";
+			String second = "";
+			if(encSPwds.isSelected()) {
+				first = encPwdTs.get(j)[0].getText();
+				second = encPwdTs.get(j)[1].getText();
+			} else {
+				first = encPwds.get(j)[0].getText();
+				second = encPwds.get(j)[1].getText();
+			}
+
+			if(!first.equals(second)) {
+				differentPwds = true;
+				VC.setBack(FC.errMsgBa, new TextField[] {encPwdTs.get(j)[0], encPwdTs.get(j)[1], encPwds.get(j)[0], encPwds.get(j)[1]});
+			}
+		}
+
+		if(differentPwds) {
+			encMsgP.getChildren().addAll(encErrI, encClI, encDiPws);
+			VC.decoratePane(encMsgP, FC.errMsgBord, FC.errMsgBa);
+			resizeComponents();
+			return;
+		}
+
+		if(toCheck.size() == 0) {
+			encMsgP.getChildren().addAll(encErrI, encClI, encNoEntry);
+			VC.decoratePane(encMsgP, FC.errMsgBord, FC.errMsgBa);
+			resizeComponents();
+			return;
+		}
+
+		boolean alreadyExists = false;
+		for(int j = 0; j < toCheck.size(); j++) {
+			boolean temp = Controller.checkForPwdDuplicates(encT.get(toCheck.get(j))[0].getText());
+			if(temp) {
+				alreadyExists = true;
+				encT.get(toCheck.get(j))[0].setBackground(FC.errMsgBa);
+			}
+		}
+		if(alreadyExists) {
+			encOvP.getChildren().addAll(encOvClBut, encOvQuest, encExistErr);
+			VC.decoratePane(encOvP, FC.errMsgBord, FC.errMsgBa);
+			resizeComponents();
+
+			VC.setNodesUsable(new Node[] {encDisBut, encChBut, encOKBut});
+
+			if(encSPwds.isSelected()) {
+				VC.setNodesUsable(new Node[] {encMPwdT});
+			} else {
+				VC.setNodesUsable(new Node[] {encMPwd});
+			}
+
+			for(int j = 0; j < encPwds.size(); j++) {
+				VC.setDisSt(true, new Node[] {encPwds.get(j)[0], encPwds.get(j)[1], encPwdTs.get(j)[0],
+						encPwdTs.get(j)[1], encT.get(j)[0], encT.get(j)[1], encT.get(j)[2],
+						encSPwds, saveBut, pBut, mBut, encBaBut});
+			}	
+			return;
+		}
+
+		for(int j = 0; j < toCheck.size(); j++) {
+			String name = encT.get(toCheck.get(j))[0].getText();
+			String uname = encT.get(toCheck.get(j))[1].getText();
+			String comment = encT.get(toCheck.get(j))[2].getText();
+			String p = "";
+			if(encSPwds.isSelected()) {
+				p = encPwdTs.get(toCheck.get(j))[0].getText();
+			} else {
+				p = encPwds.get(toCheck.get(j))[0].getText();
+			}
+			Controller.appendNewEntry(name, uname, comment, p);
+		}
+
+		encMsgP.getChildren().addAll(encDoI, encClI, encDoLa);
+		VC.decoratePane(encMsgP, FC.newMPDoBord, FC.newMPDoBa);
+		VC.setNodesUsable(new Node[] {encAg, encDo});
+
+		for(int j = 0; j < encPwds.size(); j++) {
+			VC.setDisSt(true, new Node[] {encPwds.get(j)[0], encPwds.get(j)[1], encPwdTs.get(j)[0],
+					encPwdTs.get(j)[1], encT.get(j)[0], encT.get(j)[1], encT.get(j)[2], encSPwds, saveBut, pBut, mBut});
+		}	
+		resizeComponents();
+	};
+
+----------------
+	private EventHandler<ActionEvent> valNewPwdButHa = newPwdEvent -> {
+		boolean temp = Controller.getMasterPwdExists();
+
+		VC.clearPane(newErrP);
+
+		String temporaryOldPwd = "";
+		String temporaryNewPwd;
+		String temporaryRepNew;
+		if(temp) {
+			if(newPwdS.isSelected()) {
+				temporaryOldPwd = oldPwdT.getText();
+			} else {
+				temporaryOldPwd = oldPwd.getText();
+			}
+		}
+
+		if(chPwd.isSelected()) {
+			if(newPwdS.isSelected()) {
+				temporaryNewPwd = newPwdT.getText();
+				temporaryRepNew = repNewPwdT.getText();
+			} else {
+				temporaryNewPwd = newPwd.getText();
+				temporaryRepNew = repNewPwd.getText();
+			}
+
+			if(!temporaryNewPwd.equals(temporaryRepNew)) {				
+				newErrP.getChildren().addAll(clNewErrP, newMPErrI);
+				if(temporaryNewPwd.equals("")) {
+					newErrP.getChildren().add(newMPNoF);
+				} else if(temporaryRepNew.equals("")) {
+					newErrP.getChildren().add(newMPNoS);
+				} else {
+					newErrP.getChildren().add(newMPDiPwds);
+				}
+				VC.decoratePane(newErrP, FC.newMPErrBord, FC.newMPErrBa);
+				VC.resetFields(new TextField[] {newPwd, newPwdT, repNewPwd, repNewPwdT, oldPwd, oldPwdT});
+				resizeComponents();
+
+				newPwdEvent.consume();
+				return;
+			} 
+
+			if(temporaryNewPwd.length() < FC.minPwdLen) {
+				newErrP.getChildren().addAll(clNewErrP, newMPTooShort, newMPErrI);
+				VC.decoratePane(newErrP, FC.newMPErrBord, FC.newMPErrBa);
+				VC.resetFields(new TextField[] {newPwd, newPwdT, repNewPwd, repNewPwdT, oldPwd, oldPwdT});
+				resizeComponents();
+
+				newPwdEvent.consume();
+				return;
+			}
+
+			if(temp) {
+				if(!Controller.checkUserInputMPwd(temporaryOldPwd)) {
+					newErrP.getChildren().addAll(clNewErrP, newMPErrI);
+					if(temporaryOldPwd.equals("")) {
+						newErrP.getChildren().add(newMPNoOld);
+					} else {
+						newErrP.getChildren().add(newMPWrMP);
+					}
+					VC.decoratePane(newErrP, FC.newMPErrBord, FC.newMPErrBa);
+					VC.resetFields(new TextField[] {newPwd, newPwdT, repNewPwd, repNewPwdT, oldPwd, oldPwdT});
+					oldPwd.setText("");
+					resizeComponents();
+
+					newPwdEvent.consume();
+					return;
+				}
+			}
+			afterSuccessfulPwdVal(temporaryNewPwd, false);			
+		} else {
+			if(temp) {
+				if(!Controller.checkUserInputMPwd(temporaryOldPwd)) {
+					newErrP.getChildren().addAll(clNewErrP, newMPErrI);
+					if(temporaryOldPwd.equals("")) {
+						newErrP.getChildren().add(newMPNoOld);
+					} else {
+						newErrP.getChildren().add(newMPWrMP);
+					}
+					VC.decoratePane(newErrP, FC.newMPErrBord, FC.newMPErrBa);
+					VC.resetFields(new TextField[] {newPwd, newPwdT, repNewPwd, repNewPwdT, oldPwd, oldPwdT});
+					oldPwd.setText("");
+					resizeComponents();
+
+					newPwdEvent.consume();
+					return;
+				} 
+			}
+			afterSuccessfulPwdVal(Controller.generateMasterPassword(), true);
+		}
+		if(!temp) {
+			newMPwdView.getChildren().addAll(oldPwd, oldPwdT, lockLa);
+		}
+		resizeComponents();
+	};
+-----------------
+	private EventHandler<ActionEvent> encChHa = encChangeEvent -> {
+		encOvClBut.fire();
+		VC.decoratePane(encMsgP, null, null);
+		VC.setNodesUnusable(new Node[] {encDisBut, encChBut, encOKBut, encMPwd, encMPwdT});
+
+		for(int j = 0; j < encPwds.size(); j++) {
+			VC.setDisSt(false, new Node[] {encPwds.get(j)[0], encPwds.get(j)[1], encPwdTs.get(j)[0],
+					encPwdTs.get(j)[1], encT.get(j)[0], encT.get(j)[1], encT.get(j)[2], encSPwds, saveBut, pBut, mBut});
+		}		
+	};
+-----------------
+	private EventHandler<ActionEvent> encDisHa = encDismissEvent -> {
+		encOvClBut.fire();
+
+		VC.setDisSt(false, new Node[] {encPwds.get(0)[0], encPwds.get(0)[1], encPwdTs.get(0)[0], encPwdTs.get(0)[1],
+				 encT.get(0)[0], encT.get(0)[1], encT.get(0)[2], encSPwds, saveBut, pBut, mBut, encBaBut});
+		VC.resetFields(new TextField[] {encPwds.get(0)[0], encPwds.get(0)[1], encPwdTs.get(0)[0],
+				encPwdTs.get(0)[1], encT.get(0)[0], encT.get(0)[1], encT.get(0)[2]});
+		VC.setNodesUnusable(new Node[] {encDisBut, encChBut, encOKBut, encMPwd, encMPwdT});
+
+		while(encPwds.size() > 1) {
+			mBut.fire();
+		}
+		encT.get(0)[0].setBackground(FC.empBa);
+		encSPwds.setSelected(false);
+	};
+------------------
+
+	private void addNewPwdBl(double width, double height) {
+
+		AnchorPane ancPaneToAdd = new AnchorPane();
+		ancPaneToAdd.setPrefSize(0.5 * width, 0.35 * height);
+
+		Triple temT = new Triple(width, height, FC.butDiv);
+		double wi = ancPaneToAdd.getPrefWidth();
+		double hi = ancPaneToAdd.getPrefHeight();
+
+		PasswordField[] tPwds = new PasswordField[] {VC.getNewPwdField(names.encPwdN, FC.pwdAn, temT, wi, hi),
+				VC.getNewPwdField(names.encRepPwdN, FC.repPwdAn, temT, wi, hi)};
+		TextField[] tPwdTexts = new TextField[] {VC.getNewTField(names.encPwdN, FC.pwdTAn, temT, wi, hi),
+				VC.getNewTField(names.encRepPwdN, FC.repPwdTAn, temT, wi, hi)};
+		TextField[] tTexts = new TextField[] {VC.getNewTField(names.encNN, FC.nAn, temT, wi, hi),
+				VC.getNewTField(names.encUNN, FC.unAn, temT, wi, hi), VC.getNewTField(names.encComN, FC.comAn, temT, wi, hi)};
+
+		TextFields.bindAutoCompletion(tTexts[0], logos.getPlatformList());
+
+		encPwds.add(tPwds);
+		encPwdTs.add(tPwdTexts);
+		encT.add(tTexts);
+		encBs.add(ancPaneToAdd);
+
+		if(encPwds.size() > 1) {
+			if(encSPwds.isSelected()) {
+				VC.setNodesUnusable(tPwds);
+			} else {
+				VC.setNodesUnusable(tPwdTexts);
+			}
+		}
+		ancPaneToAdd.getChildren().addAll(tTexts[0], tTexts[1], tPwds[0], tPwdTexts[0], tPwds[1], tPwdTexts[1], tTexts[2]);
+		encCon.getChildren().add(ancPaneToAdd);
+	}
+---------------
+
+	private EventHandler<ActionEvent> encButHa = encEvent -> {
+		encErrOcc = false;
+		decErrOccNoMP = false;
+		decErrOccNoPw = false;
+		VC.clearPane(userMan);
+		VC.clearPane(movErrP);
+		userManOp = false;
+		if(!Controller.getMasterPwdExists()) { 
+			movErrP.getChildren().addAll(movEncNoMPLa, movClErrP, errorI);
+			VC.decoratePane(movErrP, FC.errMsgBord, FC.errMsgBa);
+			encErrOcc = true;
+
+			resizeComponents();
+			movErrP.toFront();
+		} else {
+			menuOpVSel = false;
+			encVSel = true;
+			mainFrame.getChildren().clear();
+			mainFrame.getChildren().add(encV);
+			resizeComponents();
+		}
+	};
+----------------
+	/** @author tmf
+	 *  
+	 * used Password.getAllDecrypted() in Controller.getPwds()
+	 * 			-> Password.getAllDecrypted() gives String Array with user important information
+	 * 							^ [0] : associate
+	 * 							^ [1] : description
+	 * 							^ [2] : username
+	 * 							^ [3] : password
+	 */
+	private void chShMethod() {
+
+		ocSt = new Stage();
+		ocMainFrame = new AnchorPane();
+
+		double ocInWi = 0.4 * scene.getWidth();
+		double ocInHe = 0.9 * scene.getHeight();
+
+		ocStSc = VC.getNewScP(FC.ocScAn, ocInWi, ocInHe);
+
+		ocStCon = new GridPane();
+		ocStCon.setMaxHeight(ocInHe);
+		ocStCon.setMaxWidth(0.95 * ocInWi);
+
+		ocStSc.setContent(ocStCon);
+
+		double font = (scene.getWidth() + scene.getHeight()) / FC.butDiv;
+
+		ArrayList<Password> toShow = Controller.getPwds(decSel);
+		ocStTs = new ArrayList<TextField>();
+		ocStOldVals = new ArrayList<String>();
+
+		for(int j = 0; j < toShow.size(); j++) {
+			TextField n = VC.getOcTField(names.encNN, toShow.get(j).getAssociate(), 5*j+1, 1, ocInWi, 0.11*ocInHe, font);
+
+			n.textProperty().addListener((observable, oldVal, newVal) -> {
+				if(newVal.equals("")) {
+					VC.setTextFieldError(ocStOK, n);
+				} else {
+					n.setBackground(FC.empBa);
+					n.setBorder(FC.encBord);
+				}
+			});
+
+
+			TextField un = VC.getOcTField(names.encUNN, toShow.get(j).getUsername(), 5*j+2, 1, ocInWi, 0.11*ocInHe, font);
+
+			TextField pwd = VC.getOcTField(names.encPwdN, toShow.get(j).getPassword(), 5*j+3, 1, 0.5*ocInWi, 0.11*ocInHe, font);		
+
+			TextField pwdRep = VC.getOcTField(names.encRepPwdN, toShow.get(j).getPassword(), 5*j+3, 2, 0.5*ocInWi, 0.11*ocInHe, font);
+
+			pwd.textProperty().addListener((observable, oldVal, newVal) -> {
+				if(newVal.equals("")) {
+					VC.setTextFieldError(ocStOK, pwd);
+				} else if(!newVal.equals(pwdRep.getText())) {
+					VC.setTextFieldError(ocStOK, pwd, pwdRep);
+				} else if(pwdRep.getText().equals("")) {
+					VC.setTextFieldValid(ocStOK, pwd);
+				} else {
+					VC.setTextFieldValid(ocStOK, pwd, pwdRep);
+				}
+			});
+
+			pwdRep.textProperty().addListener((observable, oldVal, newVal) -> {
+				if(newVal.equals("")) {
+					VC.setTextFieldError(ocStOK, pwdRep);
+					pwdRep.setBackground(FC.newMPErrBa);
+					pwdRep.setBorder(FC.newMPErrBord);
+				} else if(!newVal.equals(pwd.getText())) {
+					VC.setTextFieldError(ocStOK, pwd, pwdRep);
+				} else if(pwd.getText().equals("")) {
+					VC.setTextFieldValid(ocStOK, pwdRep);
+				} else {
+					VC.setTextFieldValid(ocStOK, pwd, pwdRep);
+				}
+			});	
+
+			TextField com = VC.getOcTField(names.encComN, toShow.get(j).getDescription(), 5*j+4, 1, ocInWi, 0.11*ocInHe, font);
+			TextField emp = VC.getOcTField("", "", 5*j+5, 1, ocInWi, 0.11*ocInHe, font);
+			
+			VC.addTexts(ocStTs, new TextField[] {n, un, pwd, pwdRep, com});
+
+			VC.addStrings(ocStOldVals, new String[] {toShow.get(j).getAssociate(), toShow.get(j).getUsername(),
+					toShow.get(j).getPassword(), toShow.get(j).getPassword(), toShow.get(j).getDescription()});
+			if(j != toShow.size() - 1) {
+				ocStOldVals.add("");
+			}
+			
+			ocStCon.getChildren().addAll(n, un, pwd, pwdRep, com);
+
+			n.setDisable(true);
+			emp.setDisable(true);
+			
+			if(j != toShow.size() - 1) {
+				ocStCon.getChildren().add(emp);
+				VC.addTexts(ocStTs, new TextField[] {emp});
+			}
+				
+			if(decShSel) {
+				VC.setDisSt(true, new Node[] {un, pwd, pwdRep, com});
+			}
+		}
+
+		ocStButP = VC.getNewAnP(FC.ocButPAn, ocInWi, ocInHe);
+
+		ocStCl = VC.getOcStBut(FC.ocCaAn, names.ocStDo, font, ocInWi, ocStButP.getHeight(), ocCOCHa);
+		ocStOK = VC.getOcStBut(FC.ocOKAn, names.ocStOv, font, ocInWi, ocStButP.getHeight(), ocCOCHa);
+		ocStCh = VC.getOcStBut(FC.ocChAn, names.ocStCh, font, ocInWi, ocStButP.getHeight(), ocCOCHa);
+
+		ocStButP.getChildren().addAll(ocStCl, ocStOK, ocStCh);
+
+		if(decShSel) {
+			VC.setNodesUnusable(new Node[] {ocStOK});
+		} else if(decChSel) {
+			VC.setNodesUnusable(new Node[] {ocStCh});
+		}
+
+		ocMainFrame.getChildren().addAll(ocStSc, ocStButP);
+
+		ocSt.initOwner(stage);
+		ocSt.centerOnScreen();
+		ocSt.initModality(Modality.WINDOW_MODAL);
+
+		ocScene = new Scene(ocMainFrame, ocInWi, ocInHe);
+		ocSt.initStyle(StageStyle.UTILITY);
+
+		ocSt.setScene(ocScene);
+		ocSt.setTitle(names.ocStTit);
+		ocSt.setOnCloseRequest(confStageClHa);
+
+		ocSt.setMinHeight(ocInHe);
+		ocSt.setMaxHeight(ocInHe);
+		ocSt.setMinWidth(ocInWi);
+		ocSt.setMaxHeight(ocInWi);
+		
+		
+		setOcKeys();
+		ocSt.show();
+		ocSt.setResizable(false);
+		
+		ocStCl.requestFocus();
+	}
+
+----------------
+	private void afterSuccessfulPwdVal(String pwd, boolean isGenerated) {
+		Controller.setChangesMade();
+//		Controller.setMasterPassword(pwd);
+		Controller.setMasterPwdExists(true);
+		newErrP.getChildren().addAll(clNewErrP, newMPSaI, newMPSa);
+		VC.decoratePane(newErrP, FC.newMPDoBord, FC.newMPDoBa);
+		VC.resetFields(new TextField[] {newPwd, newPwdT, repNewPwd, repNewPwdT, oldPwd, oldPwdT});
+
+		newMPSa.setText(names.newMPSN + pwd);
+
+		newPwdS.setSelected(false);
+		chPwd.setSelected(true);
+
+		VC.setDisSt(true, new Node[] {newPwdValBut, newPwd, newPwdT, repNewPwd, 
+				repNewPwdT, oldPwd, oldPwdT, chPwd, genPwd, newPwdS, lockLa});
+		VC.setDisSt(false, new Node[] {newMPDoBut, newMPAgBut});
+		VC.setVis(true, new Node[] {newMPDoBut, newMPAgBut});
+		VC.setVis(false, new Node[] {newPwdValBut});		
+	}
+-------------------
+
+
