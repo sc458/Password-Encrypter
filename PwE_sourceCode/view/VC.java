@@ -27,13 +27,19 @@ import util.FC;
 import util.Triple;
 
 public class VC {
-	
+
+	/**
+	 * set the background of one or more textfields
+	 */
 	public static void setBack(Background bg, TextField...fields) {
 		for(TextField t : fields) {
 			t.setBackground(bg);
 		}
 	}	
 	
+	/**
+	 * create a button from available input
+	 */
 	public static Button getOcStBut(Anch an, String name, double frac, double w, 
 			double h, EventHandler<ActionEvent> handler) {
 		Button toReturn = new Button();
@@ -44,6 +50,9 @@ public class VC {
 		return toReturn;
 	}
 	
+	/**
+	 * append an array of strings to a given list of strings
+	 */
 	public static ArrayList<String> addStrings(ArrayList<String> list, String...t) {
 		for(String string : t) {
 			list.add(string);
@@ -51,6 +60,9 @@ public class VC {
 		return list;
 	}
 	
+	/**
+	 * append an array of textfields to a given list of textfields
+	 */
 	public static ArrayList<TextField> addTexts(ArrayList<TextField> list, TextField...t) {
 		for(TextField text : t) {
 			list.add(text);
@@ -58,6 +70,9 @@ public class VC {
 		return list;
 	} 
 	
+	/**
+	 * enable a pair of textfields and a button
+	 */
 	public static void setTextFieldValid(Button b, TextField t1, TextField t2) {
 		t1.setBackground(FC.empBa);
 		t1.setBorder(FC.encBord);
@@ -66,6 +81,9 @@ public class VC {
 		b.setDisable(false);
 	}
 	
+	/**
+	 * mark a pair of textfields and a button as error
+	 */
 	public static void setTextFieldError(Button b, TextField t1, TextField t2) {
 		t1.setBackground(FC.newMPErrBa);
 		t1.setBorder(FC.newMPErrBord);
@@ -74,12 +92,18 @@ public class VC {
 		b.setDisable(true);
 	}
 
+	/**
+	 * enable a button + textfield
+	 */
 	public static void setTextFieldValid(Button b, TextField tf) {
 		tf.setBackground(FC.empBa);
 		tf.setBorder(FC.encBord);
 		b.setDisable(false);
 	}
 	
+	/**
+	 * mark a button + textfield as error
+	 */
 	public static void setTextFieldError(Button b, TextField tf) {
 		tf.setBackground(FC.newMPErrBa);
 		tf.setBorder(FC.newMPErrBord);
@@ -87,6 +111,9 @@ public class VC {
 	}
 	
 	
+	/**
+	 * extract a selected textfield from the encrypt view
+	 */
 	public static TextField getOcTField(String p, String t, int row, int col, double pw, double ph, double f) {
 		TextField toReturn = new TextField();
 		toReturn.setPromptText(p);
@@ -105,6 +132,10 @@ public class VC {
 		return toReturn;
 	}
 	
+	
+	/**
+	 * create and return a new scroll pane
+	 */
 	public static ScrollPane getNewScP(Anch an, double w, double h) {
 		ScrollPane toReturn = new ScrollPane() {
 			@Override
@@ -118,12 +149,18 @@ public class VC {
 	}
 	
 	
+	/**
+	 * create and return a new anchor pane
+	 */
 	public static AnchorPane getNewAnP(Anch an, double w, double h) {
 		AnchorPane toReturn = new AnchorPane();
 		setAn(an, w, h, toReturn);
 		return toReturn;
 	}
 
+	/**
+	 * create and return a new checkbox
+	 */
 	public static CheckBox getNewCB(String name, double frac, Anch an, double w, double h) {
 		CheckBox toReturn = new CheckBox();
 		toReturn.setText(name);
@@ -135,6 +172,9 @@ public class VC {
 		return toReturn;
 	}
 
+	/**
+	 * create and return a new image label
+	 */
 	public static Label getNewImLa(ImageView img, Anch an, double width, double height) {
 		
 		Label toReturn = new Label();
@@ -146,6 +186,9 @@ public class VC {
 		return toReturn;
 	}
 	
+	/**
+	 * create and return a new image button
+	 */
 	public static Button getNewImBut(ImageView img, double w, double he, EventHandler<ActionEvent> h) {
 		Button toReturn = new Button() {
 			@Override
@@ -161,6 +204,10 @@ public class VC {
 		return toReturn;
 	}
 
+
+	/**
+	 * create and return a new image button 
+	 */
 	public static Button getNewImBut(ImageView img, Anch anch, double w, double he, EventHandler<ActionEvent> h) {
 		
 		Button toReturn = new Button();
@@ -172,6 +219,9 @@ public class VC {
 		return toReturn;
 	}
 
+	/**
+	 * create and return a new string button
+	 */
 	public static Button getNewBut(String name, Anch anch, Triple triple, boolean bool, EventHandler<ActionEvent> h) {
 		
 		Button toReturn;
@@ -193,8 +243,7 @@ public class VC {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * create and return a standard button
 	 */
 	public static Button getNewSimpleButton(String name, double font, double wi, double he, Anch an, EventHandler<ActionEvent> h) {
 		Button toReturn = new Button();
@@ -206,8 +255,7 @@ public class VC {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * create and return a new radio button
 	 */
 	public static RadioButton getNewRadioButton(String name, double font) {
 		RadioButton toReturn = new RadioButton(name);
@@ -217,6 +265,9 @@ public class VC {
 	}
 	
 	
+	/**
+	 * create and return a new label
+	 */
 	public static Label getNewLa(String name, Anch anch, Triple triple) {
 		
 		Label toReturn = new Label();
@@ -229,8 +280,7 @@ public class VC {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * create and return a new label
 	 */
 	public static Label getNewLa(String name, double frac, Anch an, double wi, double he) {
 		Label toReturn = new Label();
@@ -243,8 +293,7 @@ public class VC {
 
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * create and return a new combobox
 	 */
 	public static ComboBox<Integer> getCombobox(int min, int max, Anch an, double wi, double he) {
 		ComboBox<Integer> toReturn = new ComboBox<Integer>();
@@ -256,6 +305,9 @@ public class VC {
 	}
 	
 	
+	/**
+	 * specifiy bindings for a PasswordField and TextField
+	 */
 	public static void setPwdTextBindings(PasswordField pwd, TextField txt, CheckBox box) {
 		pwd.managedProperty().bind(box.selectedProperty().not());
 		pwd.visibleProperty().bind(box.selectedProperty().not());
@@ -264,12 +316,18 @@ public class VC {
 		txt.visibleProperty().bind(box.selectedProperty());
 	}
 	
+	/**
+	 * reset all of an array of TextFields
+	 */
 	public static void resetFields(TextField...fields) {
 		for(TextField f : fields) {
 			f.setText("");
 		}
 	}
 	
+	/**
+	 * create and return a new textfield
+	 */
 	public static TextField getNewTField(String name, Anch anch, Triple triple) {
 		
 		TextField toReturn = new TextField();
@@ -280,6 +338,9 @@ public class VC {
 		return toReturn;
 	}
 	
+	/**
+	 * create and return a new textfield
+	 */
 	public static TextField getNewTField(String name, Anch anch, Triple triple, double w, double h) {
 		
 		TextField toReturn = new TextField();
@@ -290,6 +351,9 @@ public class VC {
 		return toReturn;
 	}
 	
+	/**
+	 * create and return a new passwordfield
+	 */
 	public static PasswordField getNewPwdField(String name, Anch anch, Triple triple) {
 		
 		PasswordField toReturn = new PasswordField();
@@ -300,6 +364,9 @@ public class VC {
 		return toReturn;
 	}
 	
+	/**
+	 * create and return a new passwordfield
+	 */
 	public static PasswordField getNewPwdField(String name, Anch anch, Triple triple, double w, double h) {
 		
 		PasswordField toReturn = new PasswordField();
@@ -311,11 +378,18 @@ public class VC {
 	}
 	
 	
+	/**
+	 * set border and background of a specific pane
+	 */
 	public static void decoratePane(AnchorPane pane, Border border, Background back) {
 		pane.setBorder(border);
 		pane.setBackground(back);
 	}
 	
+	
+	/**
+	 * set a given pane empty
+	 */
 	public static void clearPane(AnchorPane pane) {
 		pane.getChildren().clear();
 		pane.setBorder(null);
@@ -323,35 +397,55 @@ public class VC {
 	}
 	
 	
+	/**
+	 * enable a set of nodes
+	 */
 	public static void setNodesUsable(Node...nodes) {
 		setDisSt(false, nodes);
 		setVis(true, nodes);
 	}
 	
+	/**
+	 * disable a set of nodes
+	 */
 	public static void setNodesUnusable(Node...nodes) {
 		setDisSt(true, nodes);
 		setVis(false, nodes);
 	}
 	
 	
+	/**
+	 * set an array of nodes to a specified disable-state
+	 */
 	public static void setDisSt(boolean state, Node...nodes) {
 		for(Node n : nodes) {
 			n.setDisable(state);
 		}
 	}
 	
+	/**
+	 * set an array of nodes to a specified visible-state
+	 */
 	public static void setVis(boolean state, Node...nodes) {
 		for(Node n : nodes) {
 			n.setVisible(state);
 		}
 	}
 	
+	/**
+	 * put an anchor to a given node
+	 */
 	public static void setAn(Anch an, double width, double height, Node node)  {
 		AnchorPane.setLeftAnchor(node, an.left() * width);
 		AnchorPane.setRightAnchor(node, an.right() * width);
 		AnchorPane.setTopAnchor(node, an.top() * height);
 		AnchorPane.setBottomAnchor(node, an.bottom() * height);
 	}
+	
+	
+	/**
+	 * some functions for getting specific fonts
+	 */
 	
 	public static Font getPwdFont(double size) {
 		return Font.font("Verdana", size);
