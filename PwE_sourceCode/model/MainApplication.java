@@ -338,6 +338,9 @@ public class MainApplication extends Application {
 		launch(args);
 	}
 
+	/**
+	 * Initialization of all panels, called when application starts
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
@@ -841,6 +844,10 @@ public class MainApplication extends Application {
 	 * Global Handling
 	 */	
 	
+	
+	/**
+	 * event handler in case of pressing the back-button in the user manual
+	 */
 	private EventHandler<ActionEvent> userManualBackHandler = userManualBackEvent -> {
 		if(userManComeFromLogin) {
 			togglePane(startFrame, userManOp, startFrameSelected);
@@ -850,6 +857,9 @@ public class MainApplication extends Application {
 		userManComeFromLogin = false;
 	};
 	
+	/**
+	 * event handler for switching the language (either german or english)
+	 */
 	private EventHandler<ActionEvent> toggleLanguage = toggleLanguageEvent -> {
 		if(toggleLanguageEvent.getSource().equals(logingermanitem) ||
 				toggleLanguageEvent.getSource().equals(menuopengermanitem)) {
@@ -869,6 +879,9 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	/**
+	 * update item descriptions shown in the view with current language choice
+	 */
 	private void changeItemLanguage() {
 		if(startFrameSelected) {
 			stage.setTitle(names.loginHeader);
@@ -981,6 +994,9 @@ public class MainApplication extends Application {
 		}	
 	}
 	
+	/**
+	 * occupy the current view with a new pane
+	 */
 	private void togglePane(AnchorPane np, boolean ob, boolean nb) {
 		ob = false;
 		nb = true;
@@ -988,6 +1004,9 @@ public class MainApplication extends Application {
 		mainFrame.getChildren().add(np);
 	}
 	
+	/**
+	 * event handler for clicking the exit button
+	 */
 	private EventHandler<WindowEvent> confClEvHa = event -> {
 
 		Alert exit = new Alert(AlertType.CONFIRMATION);
@@ -1022,6 +1041,10 @@ public class MainApplication extends Application {
 	 * Login-View Handling
 	 */	
 	
+	
+	/**
+	 * event handler when the login-button is pressed
+	 */
 	private EventHandler<ActionEvent> loginAttemptHandler = loginAttemptEvent -> {
 		startframeclMsg.fire();
 		// no textfield input
@@ -1072,11 +1095,17 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	/**
+	 * event handler when the usermanual-button is pressed
+	 */
 	private EventHandler<ActionEvent> loginHelpHandler = loginHelpEvent -> {
 		togglePane(userMan, startFrameSelected, userManOp);
 		userManComeFromLogin = true;
 	};
 	
+	/**
+	 * event handler when new-user-button is pressed
+	 */
 	private EventHandler<ActionEvent> loginNewUserHandler = loginnewuserEvent -> {
 		togglePane(newuserPane, startFrameSelected, newuserFrameSelected);
 		startframeclMsg.fire();
@@ -1091,6 +1120,10 @@ public class MainApplication extends Application {
 	*/	
 
 
+	
+	/**
+	 * event handler when new account data is confirmed
+	 */
 	private EventHandler<ActionEvent> newAccountHandler = newAccountEvent -> {
 		newuserMsgCl.fire();		
 		// no account name
@@ -1200,14 +1233,21 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * generate a dialog, asking the user to confirm a new choice for the password
+	 */
 	private boolean confirmnewuserpwd(String pwd, boolean generated) {
 		
 		Alert conf = new Alert(AlertType.CONFIRMATION);
 		conf.initOwner(stage);
 		conf.getButtonTypes().clear();
 		conf.setTitle(names.confirmnewusertitle);
+		
+		// get an estimate for the security of the password
 		double score = Math.min(PasswordSecurity.estimatePwStrength(pwd), 100.0);
 		String scoreStr = String.format("%.2f", score);
+		
 		if(!generated) {
 			conf.setHeaderText(names.confirmnewuserquest1);
 			conf.setContentText(names.confirmnewusercont1 +	scoreStr + "/100");
@@ -1233,6 +1273,9 @@ public class MainApplication extends Application {
 		}
 	}
 	
+	/**
+	 * event handler for pressing the back-button in the new-user frame
+	 */
 	private EventHandler<ActionEvent> newuserBackHandler = newuserBackEvent -> {
 		// reset single components of newuser-view
 		VC.resetFields(newusername,newuserPwd,newuserPwdT,newuserPwdRep,newuserPwdRepT);
@@ -1263,6 +1306,10 @@ public class MainApplication extends Application {
 	 * Menu-View Handling
 	 */	
 
+	
+	/**
+	 * event handler for pressing the logout button in the menu view
+	 */
 	private EventHandler<ActionEvent> menuopenlogoutHandler = menuopenlogoutEvent -> {
 		menuopenMsgCl.fire();
 		Alert conf = new Alert(AlertType.CONFIRMATION);
@@ -1297,20 +1344,36 @@ public class MainApplication extends Application {
 		loginshow.setSelected(false);
 	};
 	
+	
+	/**
+	 * event handler for pressing the help-button in the menu view
+	 */
 	private EventHandler<ActionEvent> menuopenHelpHandler = menuopenHelpEvent -> {
 		menuopenMsgCl.fire();
 		togglePane(userMan, menuOpVSel, userManOp);
 		userManComeFromLogin = false;
 	};
 	
+	
+	/**
+	 * event handler for pressing the test-passwords-button in the menu view
+	 */
 	private EventHandler<ActionEvent> menuopentestpwdHandler = menuopentestpwdEvent -> {
 		togglePane(testpwdPane, menuOpVSel, testpwdFrameSelected);
 	};
 	
+	
+	/**
+	 * event handler for pressing the encrypt-button in the menu view
+	 */
 	private EventHandler<ActionEvent> menuopenencryptHandler = menuopenencryptEvent -> {
 		togglePane(encryptPane, menuOpVSel, encVSel);
 	};
 	
+	
+	/**
+	 * event handler for pressing the decrypt-button in the menu view
+	 */
 	private EventHandler<ActionEvent> menuopendecryptHandler = menuopendecryptEvent -> {
 		menuopenMsgCl.fire();
 		if(Controller.getNumOfPwds() == 0) {
@@ -1330,10 +1393,18 @@ public class MainApplication extends Application {
 	 * Menu-Reset/Delete/NewMPwd Handling
 	 */
 
+	
+	/**
+	 * event handler for pressing the close-button of the error message in the menu view
+	 */
 	private EventHandler<ActionEvent> moCloseHandler = moCloseEvent -> {
 		closeMoMsgPane(moMsg);
 	};
 	
+	
+	/**
+	 * event handler for pressing the done-button in case of a new password choice
+	 */
 	private EventHandler<ActionEvent> moDoneHandler = moDoneEvent -> {
 		boolean tocontinue = true;
 		if(moshow.isSelected() && menuopenOldPwdT.getText().equals("") ||
@@ -1385,6 +1456,9 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	/**
+	 * put an error message to the new-account view
+	 */
 	private void setMoErrorMsg(Label msg) {
 		moMsgCl.fire();
 		moMsg.getChildren().addAll(moMsgCl,msg);
@@ -1392,6 +1466,9 @@ public class MainApplication extends Application {
 		menuopenNewPwdPane.getChildren().add(moMsg);
 	}
 	
+	/**
+	 * event handler for pressing the reset-button for an existing account
+	 */
 	private EventHandler<ActionEvent> resetAccountHandler = resetAccountEvent -> {
 		menuopenMsgCl.fire();
 		confirmReset(names.resetaccounthead,names.resetaccountlabel);
@@ -1413,6 +1490,9 @@ public class MainApplication extends Application {
 		resetCancelled = false;
 	};
 	
+	/**
+	 * event handler for the reset-button for the master-password
+	 */
 	private EventHandler<ActionEvent> resetPasswordHandler = resetPasswordEvent -> {
 		menuopenMsgCl.fire();
 		confirmReset(names.resetpwdhead,names.resetpwdlabel);
@@ -1432,6 +1512,10 @@ public class MainApplication extends Application {
 		resetCancelled = false;
 	};
 	
+	
+	/**
+	 * opens a confirmations dialog for resetting an account
+	 */
 	private void confirmReset(String title,String msg) {
 		Stage resetstage = new Stage();
 		AnchorPane resetpane = new AnchorPane();
@@ -1501,6 +1585,9 @@ public class MainApplication extends Application {
 			}
 		};
 		
+		/**
+		 * event handler for pressing exit-button in the reset-view
+		 */
 		EventHandler<ActionEvent> cancelHandler = new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -1531,6 +1618,10 @@ public class MainApplication extends Application {
 		resetstage.showAndWait();
 	}
 	
+	
+	/**
+	 * event handler for createing the new-password view
+	 */
 	private EventHandler<ActionEvent> menuopennewPwdHandler = menuopennewPwdEvent -> {
 		menuopenMsgCl.fire();
 		menuopenNewPwdStage = new Stage();
@@ -1599,6 +1690,7 @@ public class MainApplication extends Application {
 		VC.setPwdTextBindings(menuopenNewPwdP, menuopenNewPwdT, moshow);
 		VC.setPwdTextBindings(menuopenNewPwdRepP, menuopenNewPwdRepT, moshow);
 		
+		// place items at appropriate positions
 		VC.setAn(new Anch(0.03,0.38,0.05,0.82), ninwi, ninhe, menuopenOldPwdP);
 		VC.setAn(new Anch(0.1,0.45,0.35,0.52), ninwi, ninhe, menuopenNewPwdP);
 		VC.setAn(new Anch(0.1,0.45,0.43,0.44), ninwi, ninhe, menuopenNewPwdRepP);
@@ -1645,6 +1737,7 @@ public class MainApplication extends Application {
 			}
 		});		
 		
+		// add new items to current view
 		motoggle = new ToggleGroup();
 		motoggle.getToggles().addAll(mochoosepwd,mogenpwd);
 		motoggle.selectToggle(mochoosepwd);
@@ -1654,8 +1747,7 @@ public class MainApplication extends Application {
 		movbox.getChildren().add(mogenpwd);
 		movbox.setSpacing(0.65*FC.vbspac * ninhe);
 		VC.setAn(new Anch(0.02,0.1,0.28,0.0), ninwi, ninhe, movbox);
-		
-		
+			
 		modone = new Button();
 		modone.setText(names.menuopenDone);
 		modone.setFont(VC.getFont(mainFrac));
@@ -1687,6 +1779,10 @@ public class MainApplication extends Application {
 	 * Test-Pwds-View Handling
 	 */	
 	
+	
+	/**
+	 * event handler for the back-button in test-pwd view
+	 */
 	private EventHandler<ActionEvent> testpwdBackHandler = testpwdBackEvent -> {
 		// reset Test-Password pane
 		testpwdMsgCl.fire();
@@ -1702,6 +1798,10 @@ public class MainApplication extends Application {
 		togglePane(menuopenPane, testpwdFrameSelected, menuOpVSel);
 	};
 	
+	
+	/**
+	 * event handler for evaluating a password from the user
+	 */
 	private EventHandler<ActionEvent> testpwdEstimateHandler = testpwdEstimateEvent -> {
 		testpwdMsgCl.fire();
 		String toTest;
@@ -1741,12 +1841,19 @@ public class MainApplication extends Application {
 	 * Decrypt-View Handling
 	 */
 	
+	
+	/**
+	 * event handler for the back-button in decrypt view
+	 */
 	private EventHandler<ActionEvent> decryptBackHandler = decryptBackEvent -> {
 		VC.setDisSt(true, new Node[] {decryptShow, decryptChange, decryptDelete});
 		decryptClI.fire();
 		togglePane(menuopenPane, decVSel, menuOpVSel);
 	};
 	
+	/**
+	 * event handler for the change-button in the decrypt view
+	 */
 	private EventHandler<ActionEvent> decryptChangeHandler = decryptChangeEvent -> {
 		decChSel = true;
 		decShSel = false;
@@ -1754,6 +1861,9 @@ public class MainApplication extends Application {
 		decryptChangeAndShow();
 	};
 	
+	/**
+	 * event handler for the show-button in the decrypt view
+	 */
 	private EventHandler<ActionEvent> decryptShowHandler = decryptShowEvent -> {
 		decChSel = false;
 		decShSel = true;
@@ -1761,6 +1871,9 @@ public class MainApplication extends Application {
 		decryptChangeAndShow();
 	};
 	
+	/**
+	 * event handler for the delete-button in the decrypt view
+	 */
 	private EventHandler<ActionEvent> decryptDeleteHandler = decryptDeleteEvent -> {
 		
 		decryptClI.fire();
@@ -1806,6 +1919,10 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * event handler for addressing a single entry in the decrypt view
+	 */
 	private EventHandler<ActionEvent> decryptSingleButtonHandler = decryptSingleButtonEvent -> {
 		int index = -1;
 		for(int j = 0; j < decryptPwds.size(); j++) {
@@ -1832,6 +1949,10 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * method for putting the stored entries in their associated place in the decrypt view
+	 */
 	private void setDecryptButtons() {
 		decryptContent.getChildren().clear();
 		decryptPwds = new ArrayList<Button>();
@@ -1896,6 +2017,9 @@ public class MainApplication extends Application {
 	 * Decrypt-Stage Handling (Shows selected entries)
 	 */
 	
+	/**
+	 * create a new view as pop-up, containing the requested entries
+	 */
 	private void decryptChangeAndShow() {
 
 		decryptShowStage = new Stage();
@@ -2028,6 +2152,10 @@ public class MainApplication extends Application {
 		decryptShowClose.requestFocus();
 	}
 	
+	
+	/**
+	 * event handler for pressing the close-button on the second-decrypt-stage
+	 */
 	private EventHandler<WindowEvent> decryptStageExitHandler = decryptStageExitEvent -> {
 		if(!decShSel) {
 
@@ -2072,10 +2200,18 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * event handler for the close-button in the second-decrypt-stage
+	 */
 	private EventHandler<ActionEvent> decryptStageCloseHandler = decryptStageCloseEvent -> {
 		decryptShowStage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	};
 	
+	
+	/**
+	 * event handler for the change-button in the second-decrypt-stage
+	 */
 	private EventHandler<ActionEvent> decryptStageChangeHandler = decryptStageChangeEvent -> {
 		VC.setNodesUnusable(new Node[] {decryptShowChange});
 		VC.setNodesUsable(new Node[] {decryptShowOK});
@@ -2088,6 +2224,10 @@ public class MainApplication extends Application {
 		decChSel = true;
 	};
 	
+	
+	/**
+	 * event handler for the OK-button in the second-decrypt-stage
+	 */
 	private EventHandler<ActionEvent> decryptStageOKHandler = decryptStageOKEvent -> {
 		
 		ArrayList<String> toStore = new ArrayList<String>();		
@@ -2119,6 +2259,10 @@ public class MainApplication extends Application {
 	 * Encrypt-View Handling
 	 */
 
+	
+	/**
+	 * event handler for the back button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptBackHandler = encryptBackEvent -> {
 		VC.setDisSt(false, new Node[] {encryptPwds.get(0)[0], encryptPwds.get(0)[1], encryptPwdsT.get(0)[0],
 				encryptPwdsT.get(0)[1], encryptText.get(0)[0], encryptText.get(0)[1], encryptText.get(0)[2], 
@@ -2146,6 +2290,10 @@ public class MainApplication extends Application {
 		togglePane(menuopenPane, encVSel, menuOpVSel);
 	};
 	
+	
+	/**
+	 * event handler for the again-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptAgainHandler = encryptAgainEvent -> {
 		VC.setDisSt(false, new Node[] {encryptPwds.get(0)[0], encryptPwds.get(0)[1], encryptPwdsT.get(0)[0],
 				encryptPwdsT.get(0)[1], encryptText.get(0)[0], encryptText.get(0)[1], encryptText.get(0)[2], 
@@ -2162,12 +2310,20 @@ public class MainApplication extends Application {
 		encryptPane.getChildren().remove(encryptDone);
 	};
 	
+	
+	/**
+	 * event handler for the done-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptDoneHandler = encryptDoneEvent -> {
 		encryptAgain.fire();
 		encryptBackButton.fire();
 		encryptShowPwds.setSelected(false);
 	};
 	
+	
+	/**
+	 * event handler for the OK-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptOKHandler = encryptOKEvent -> {
 		encryptMsgCl.fire();
 
@@ -2203,6 +2359,10 @@ public class MainApplication extends Application {
 		Controller.storeAndOverwrite(toStore);
 	};
 	
+	
+	/**
+	 * event handler for the change-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptChangeHandler = encryptChangeEvent -> {
 		encryptMsgCl.fire();
 		VC.decoratePane(encryptMsgPane, null, null);
@@ -2215,6 +2375,10 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * event handler for the dismiss-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptDismissHandler = encryptDismissEvent -> {
 		encryptMsgCl.fire();
 
@@ -2233,6 +2397,10 @@ public class MainApplication extends Application {
 		encryptShowPwds.setSelected(false);
 	};
 	
+	
+	/**
+	 * event handler for the save-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptSaveHandler = encryptSaveEvent -> {
 		encryptMsgCl.fire();
 
@@ -2392,10 +2560,18 @@ public class MainApplication extends Application {
 		encryptPane.getChildren().addAll(encryptAgain, encryptDone);
 	};	
 
+	
+	/**
+	 * event handler for the plus-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptPlusHandler = encryptPlusEvent -> {
 		addNewPwdBlock(FC.inWi,FC.inHe);
 	};
 	
+	
+	/**
+	 * event handler for the minus-button in the encrypt view
+	 */
 	private EventHandler<ActionEvent> encryptMinusHandler = encryptMinusEvent -> {
 		if(encryptPwds.size() > 1) {
 			encryptBlocks.get(encryptBlocks.size()-1).getChildren().clear();
@@ -2407,6 +2583,10 @@ public class MainApplication extends Application {
 		}
 	};
 	
+	
+	/**
+	 * method for adding a single block in the encrypt view (for storing an additional entry)
+	 */
 	private void addNewPwdBlock(double width, double height) {
 
 		AnchorPane ancPaneToAdd = new AnchorPane();
