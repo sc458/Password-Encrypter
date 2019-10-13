@@ -1,5 +1,10 @@
 package util;
 
+/**
+ * class for defining an achor, characterized by left, right, up and bottom coordinate;
+ * this object is used when populating different views with their child objects
+ */
+
 public class Anch {
 
 	private double leftAnchor;

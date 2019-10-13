@@ -1,5 +1,10 @@
 package util;
 
+/**
+ * class for defining a triple, characterized by three numbers;
+ * this object is used for specifying sizes of different objects in various views
+ */
+
 public class Triple {
 
 	private double fir;

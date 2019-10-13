@@ -12,6 +12,16 @@ import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
 
+/**
+ * collection of constants of all types, contains:
+ * 	- file paths for logos
+ *  - file paths for icons
+ *  - json-identifiers
+ *  - backgrounds and borders
+ *  - anchors for each view
+ *  - global size attributs
+ */
+
 public class FC {
 
 	public final static String mainFileName = "/PwEsaveIO.json";
@@ -353,10 +363,8 @@ public class FC {
 	public final static String zebraLP = "/logos/zebra.png";
 	public final static String zespriLP = "/logos/zespri.png";
 	
-	/** @author tmf
-	 *  
-	 *  @date 18-02-28 adapted Password attributes.
-	 * 
+	/**
+	 * Password attributes
 	 */
 	public final static String user = "user";
 	public final static String name = "name";

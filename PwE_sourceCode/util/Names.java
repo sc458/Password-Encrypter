@@ -1,5 +1,10 @@
 package util;
 
+/**
+ * class used for toggling languages; for this version we offer english and german;
+ * every string displayed in the program has its english and german translation here;
+ */
+
 public class Names {
 
 	public Language language;

@@ -3,6 +3,11 @@ package util;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * class for defining an object logo, characterized by a name, a path to the image-file
+ * and the image of the logo
+ */
+
 public class Logo {
 
 	private String name;
