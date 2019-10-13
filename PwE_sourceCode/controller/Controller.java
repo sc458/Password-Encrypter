@@ -116,14 +116,23 @@ public class Controller {
 	public ImageView encryptClI;
 	public ImageView decryptClI;
 	
+	/**
+	 * create an image object from a given file-path
+	 */
 	protected Image createImage(String path) {
 		return new Image(Controller.class.getResourceAsStream(path));
 	}
 	
+	/**
+	 * create an image object with constraint size from a given file path
+	 */
 	protected Image createSmallImage(String path, double width, double height) {
 		return new Image(Controller.class.getResourceAsStream(path),width,height,false,false);
 	}
 	
+	/**
+	 * constructor for object Controller, contains all icons used in the program
+	 */
 	public Controller() {
 		startClI = new ImageView(createImage(FC.closeMsgIPath));
 		startI = new ImageView(createSmallImage(FC.settingsIPath,FC.inWi*0.06,FC.inHe*0.1));
@@ -168,8 +177,7 @@ public class Controller {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * get the master-password associated with a given username
 	 */
 	public static String chooseMPwdFromUsers(String username) {
 		JsonArray users = sourceFile.getJsonArray("user");
@@ -184,8 +192,7 @@ public class Controller {
 
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * remove the current user with all associated entries from the json object
 	 */
 	public static void deleteCurrentUser() {
 		String username = currentUser.getString("name");
@@ -299,6 +306,9 @@ public class Controller {
 		
 	
 	
+	/**
+	 * remove a list of password entries of the current user
+	 */
 	public static void deleteListEntries(ArrayList<Integer> del) {
 		Iterator<Password> iter = pwds.iterator();
 		int counter = 0;
@@ -315,6 +325,9 @@ public class Controller {
 		setNumOfPwds(pwds.size());
 	}
 	
+	/**
+	 * get a string array with names of all existing password entries in the current user account
+	 */
 	public static String[] getExistingNameList() {
 		String[] toReturn = new String[pwds.size()];
 		
@@ -325,17 +338,22 @@ public class Controller {
 		return toReturn;
 	}
 	
+	/**
+	 * detect if any changes have been done in an account
+	 */
 	public static void setChangesMade() {
 		changesMade = true;
 	}
 	
+	/**
+	 * get information about whether there have been any changes made since the program was started
+	 */
 	public static boolean getChangesMade() {
 		return changesMade;
 	}
 	
-//	public static boolean checkUserInputMPwd(String userInput) {		
-//		return Password.check_password(userInput, masterPassword);
-//	}
+
+
 
 	/** @author tmf
 	 *  
@@ -364,8 +382,7 @@ public class Controller {
 	
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * change the master password of the current account
 	 */
 	public static void changeMasterPwd(String pwd) {
 		// change encryption of existing pwds
@@ -384,6 +401,9 @@ public class Controller {
 		}
 	}
 	
+	/**
+	 * initialization method for setting a new master password
+	 */
 	public static String setNewMasterPassword(String pwd) {
 	    try {
 			Password.initialiseMaster(pwd);
@@ -393,7 +413,9 @@ public class Controller {
 	}
 	
 
-	
+	/**
+	 * get the path to where the main program is executed
+	 */
 	private String GetExecutionPath(){
 	    String absolutePath = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 	    absolutePath = absolutePath.substring(0, absolutePath.lastIndexOf("/"));
@@ -402,10 +424,12 @@ public class Controller {
 	}
 	
 	
+	/**
+	 * setter and getter for the number of passwords in the current account
+	 */
 	public static void setNumOfPwds(int num) {
 		numOfPwds = num;
 	}
-	
 	public static int getNumOfPwds() {
 		return numOfPwds;
 	}
@@ -453,6 +477,9 @@ public class Controller {
 	}
 	
 	
+	/**
+	 * check if the name of a new entry is already used in the current account
+	 */
 	public static boolean checkForPwdDuplicates(String toCheck) {
 		for(int j = 0; j < pwds.size(); j++) {
 			if(pwds.get(j).getAssociate().equals(toCheck)) {
@@ -463,6 +490,9 @@ public class Controller {
 	}
 	
 	
+	/**
+	 * get all passwords (decrypted) selected by the user (characterized by a boolean list for indices) 
+	 */
 	public static ArrayList<String[]> getPwds(ArrayList<Boolean> sel) {
 		ArrayList<String[]> toReturn = new ArrayList<String[]>();
 		for(int j=0; j<sel.size(); j++) {
@@ -540,8 +570,7 @@ public class Controller {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * add a new user(-account) to the global json object
 	 */
 	public static void createNewUser(String name, String mpwd) {
 		JsonBuilderFactory factory = Json.createBuilderFactory(null);
@@ -556,8 +585,7 @@ public class Controller {
 	}	
 
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * select the json-object associated to a given user from the global object
 	 */
 	public static void selectCurrentUser(String username) {
 		JsonArray users = sourceFile.getJsonArray(FC.user);
@@ -580,8 +608,7 @@ public class Controller {
 	}
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * delete all current password entries for the current user
 	 */
 	public static void deleteCurrentPasswords() {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -595,8 +622,7 @@ public class Controller {
 	
 	
 	/**
-	 * @author fabian
-	 * @date 08-2018
+	 * when the user logs out, save all changes to the global json object (not to file yet)
 	 */
 	public static void saveChangesOnLogout() {
 		JsonArray users = sourceFile.getJsonArray(FC.user);
@@ -641,6 +667,20 @@ public class Controller {
 		currentUser = null;
 	}
 	
+	
+	/**
+	 * save all changes made to the json-file; this function is called only when the
+	 * program is closed;
+	 * 
+	 * policy:
+	 *  - if there exists already a json-file, this is copied and marked as back-up
+	 *  - the new global json-object is now written to file
+	 *  - if all checks are ok, then the backup-file is deleted again
+	 *  
+	 * this serves for saftey reasons, so that in an unexpected interruption of the saving
+	 * process, the already existing data is not lost;
+	 * in such a case the backup-file must be renamed to 'PwEsaveIO', and the program works again
+	 */
 	public boolean saveChanges() {
 
 		if(!(currentUser == null)) {

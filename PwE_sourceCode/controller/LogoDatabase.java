@@ -7,6 +7,10 @@ import util.FC;
 import util.Language;
 import util.Logo;
 
+/**
+ * database containing all stored logos with their associated name and image-path
+ */
+
 public class LogoDatabase {
 
 	private Logo[] logoList;
@@ -339,6 +343,9 @@ public class LogoDatabase {
 	}
 
 
+	/**
+	 * get an array of all names in the database
+	 */
 	public String[] getPlatformList() {
 		String[] toReturn = new String[this.logoList.length];
 
@@ -349,6 +356,9 @@ public class LogoDatabase {
 		return toReturn;
 	}
 	
+	/**
+	 * check if a given name does exist in the database
+	 */
 	public ImageView checkForExistence(String name) {
 		for(int j = 0; j < this.logoList.length; j++) {
 			if(logoList[j].getName().equals(name)) {
