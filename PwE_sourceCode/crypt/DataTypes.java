@@ -2,7 +2,15 @@ package crypt;
 
 import java.io.UnsupportedEncodingException;
 
-
+/**	class DataTypes
+ * 
+ * This class contains all operations and the DataTypes used for encoding
+ * information all around the Hashing procedures. These operations are mainly
+ * focused on hexadecimal Strings. Thus, among others, here we implemented
+ * conversions from hex-Strings to binary or unrestricted String types and
+ * vice versa. 
+ * 
+ */
 public class DataTypes {
 	
 	/**	hex_add_bin()
@@ -56,10 +64,8 @@ public class DataTypes {
      * @return			Hex-String	Encoded Hex-String.
      */
     public static String StringtoHex(String arg){
-    	//System.out.println("String2Hex: "+arg);
 		try {
 	    	byte[] b_temp = arg.getBytes("UTF-8");
-	    	//DataTypes.pr_bytes(b_temp, "String2Hex");
 	        return DataTypes.BytetoHex(b_temp);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -134,7 +140,6 @@ public class DataTypes {
         byte[] binary = new byte[hex_String.length() / 2];
         for(int ii=0; ii < binary.length; ii++) {
             binary[ii] = (byte) Integer.parseInt(hex_String.substring(2*ii, 2*ii+2), 16);
-        	//System.out.println("H2B: "+hex_String.substring(2*ii, 2*ii+2)+" - "+Integer.parseInt(hex_String.substring(2*ii, 2*ii+2), 16)+" - "+ binary[ii]);
         }
         return binary;
     }

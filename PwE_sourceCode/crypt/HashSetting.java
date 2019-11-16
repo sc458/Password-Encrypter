@@ -1,5 +1,12 @@
 package crypt;
 
+/**	class HashSetting
+ * 
+ * This class contains settings used by Hashing.java to create hashes
+ * for a given data. E.g. the size of the hash and salt, the hashing
+ * algorithm, the number of hashing iterations, etc.
+ * 
+ */
 public class HashSetting {
     // Choose HASH_SIZE in byte minimal 2*ROUND((MAX_PASSWORD_LENGTH + 2.08)/1.268 )
     public final int SALT_BYTE_SIZE;

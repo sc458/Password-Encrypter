@@ -5,7 +5,25 @@ import java.lang.management.ManagementFactory;
 // For java 9
 //import java.lang.ProcessHandle*;
 
-
+/**	class Password
+ * 
+ * This class is the main class for dealing with en- and decryption
+ * of passwords. Each password type Password() contains among others
+ * the following attributes
+ * 
+ * @param	associate		String		Key as address for the encrypted password.
+ * 
+ * @param	username		String		Username belonging to the account at the associate.
+ *      
+ * @param	encryptUsername	boolean		Flag for username encryption. If true username 
+ * 										is encrypted, else it will be stored directly.
+ * 
+ * @param	password		String		Encrypted Password.
+ *     
+ * @param	description		String		Arbitrary text describing the associate. Will be
+ * 										stored directly without encryption.
+ * 
+ */
 public class Password {
 	public static boolean suppress_output = true;
 	private static final String branding_salt = "K-Cl";
@@ -30,7 +48,6 @@ public class Password {
     private static final int MAX_PERM_HASH_TRY = 100;
 //    private static final int NUMBER_PREPARED_HASHES = 20;
     
-// final ????
 //    private static final int master_penetration_limit = 10;
    
     
@@ -93,7 +110,6 @@ public class Password {
     	toScreen("> Encrypt seed:"+getPID()+branding_salt);
     	masterPwd = encryptPassword(getPID()+branding_salt, master_pwd);
     	toScreen("> masterPWD: "+masterPwd);
-//		masterPwd = master_pwd;
     	master_pwd = null;
     }
     
@@ -117,10 +133,7 @@ public class Password {
 		}
     }
     
-    private static String getdecryptedMaster( ) throws RunOutOfHashException {
-//    	toScreen("> Decrypted Master: "+masterPwd);
-//    	return masterPwd;
-    	
+    private static String getdecryptedMaster( ) throws RunOutOfHashException {    	
     	String args[] = masterPwd.split(":");
     	toScreen("> Process ID: "+ getPID());
     	String strg = decrypt(getPID()+branding_salt, args[0], args[1], args[2]);
@@ -188,9 +201,9 @@ public class Password {
      */
     private static void pr_hash(String hash, String code){
     	if (!suppress_output){
-//    	System.out.println("*** [Printing Hash] "+code+" ***");
-//    	System.out.println(hash);
-//    	System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+    	System.out.println("*** [Printing Hash] "+code+" ***");
+    	System.out.println(hash);
+    	System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
     	}
     }
     
@@ -201,13 +214,13 @@ public class Password {
      */
     public void print(){
     	if (!suppress_output){
-//    	System.out.println("Your password is stored securely as: ");
-//    	System.out.println("	Associate:		"+this.associate);
-//    	System.out.println("	Username:	 	"+this.username);
-//    	System.out.println("	Password:		"+this.password);
-//    	System.out.println("	Description:		"+this.description);
-//    	System.out.println("	Used MasterSalt:	"+this.masterSalt);
-//    	System.out.println();
+    	System.out.println("Your password is stored securely as: ");
+    	System.out.println("	Associate:		"+this.associate);
+    	System.out.println("	Username:	 	"+this.username);
+    	System.out.println("	Password:		"+this.password);
+    	System.out.println("	Description:		"+this.description);
+    	System.out.println("	Used MasterSalt:	"+this.masterSalt);
+    	System.out.println();
     	}
     }
 

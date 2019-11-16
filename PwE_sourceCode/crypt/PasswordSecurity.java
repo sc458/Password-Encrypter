@@ -8,6 +8,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**	class PasswordSecurity
+ * 
+ * This class contains auxillary functions to determine the security 
+ * of a password. Among others we can investigate a given password for
+ * internal patterns, frequently used keywords, personal date (birthdays),
+ * or keyboard pattern. This helps the user to choose a more secure
+ * password. Further, we have a random password generator as well.
+ * 
+ */
 public class PasswordSecurity {
 	private static final String uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	private static final String lowercase = "abcdefghijklmnopqrstuvwxyz";
@@ -51,6 +60,26 @@ public class PasswordSecurity {
 	private static final byte deByte = -16;
 	private static final String devider = ""+((char) deByte)+((char) deByte);
 	
+	/**	keyShift()
+	 * 
+	 * Given a String instance (a password), this function proposes a
+	 * keyshift on the keyboard in a given direction to add a slight
+	 * level of complexity to a password or in reverse to investigate,
+	 * if someone took an easy password and just shifted it.
+	 * 
+	 * @param	password		String		Password to be shifted.
+	 * 
+	 * @param	direction		String		Direction on the keyboard.
+	 * 										String has to be one of the options
+	 * 										'r'  : shift one key to the right
+	 * 										'ul' : ...to the upper left
+	 * 										'ur' : ...to the upper right
+	 * 										'uls': ...upper left including symbols
+	 * 										'urs': ... upper right including symbols
+	 * 
+	 * @warning: this routine has not been tested extensively
+	 * TODO: test routine
+	 */
 	private static String keyShift(String password, String direction){
 		String shift = "";
 		if (direction.equals("r")) shift = keyShiftRight;
@@ -79,6 +108,19 @@ public class PasswordSecurity {
 		return proposal;
 	}
 	
+	/**	proposeCharExchange()
+	 * 
+	 * Given a String instance (a password), this function proposes an
+	 * other String in which some of the characters are replaced by
+	 * similar symbols (e.g. a -> @, s -> $) to add a slight
+	 * level of complexity to a password or in reverse to investigate,
+	 * if someone took an easy password and just modified it.
+	 * 
+	 * @param	password		String		Password to be shifted.
+	 * 
+	 * @warning: this routine has not been tested extensively
+	 * TODO: test routine
+	 */
 	private static String proposeCharExchange(String password){
 		String temp = password.toLowerCase();
 		String proposal = "";
@@ -111,6 +153,16 @@ public class PasswordSecurity {
 		return proposal;
 	}
 	
+	/**	createRegex()
+	 * 
+	 * Given a String instance (a password), this function creates a 
+	 * regular expression regarding lowercase, uppercase, digits, and
+	 * symbols. With this regex, a pattern with respect to the use of
+	 * digits, symbols, lower-/uppercase can be investigated
+	 * 
+	 * @param	pattern		String		Password to be encoded in a regex.
+	 * 
+	 */
 	private static String createRegex(String pattern) {
 		/* Patterns : 	l = lowercase
 		 * 				u = uppercase
@@ -165,6 +217,20 @@ public class PasswordSecurity {
 		return regex;
 	}
 	
+	/**	splitbyPattern()
+	 * 
+	 * Given a String instance (a password), and the detected patterns
+	 * this function splits the input String acording to its patterns
+	 * in order to investigate each subpart of the pattern afterwards. 
+	 * 
+	 * To do so, this function calls the iterative function 
+	 * getSplitByPattern() below.
+	 * 
+	 * @param	text		String		Password to be splitted.
+	 * 	
+	 * @param	patterns	String[]	Detected patterns.
+	 * 
+	 */
 	private static String[] splitbyPattern(String text, String patterns[]) {
 		if ( text == null || text.length() == 0) return new String[] {""};
 		
@@ -198,6 +264,15 @@ public class PasswordSecurity {
 		return out;		
 	}
 	
+	/**	getSplitbyPattern()
+	 * 
+	 * Iterative function to split a given String instance (a password). 
+	 * 
+	 * @param	input		String		String to be splitted.
+	 * 	
+	 * @param	target		String		Target patterns to split for.
+	 * 
+	 */
 	private static String[] getSplitbyPattern(String input, String target) {
 		if (input == null || input.length() == 0) return new String[] {""};
 
@@ -224,6 +299,17 @@ public class PasswordSecurity {
 		return concate(outL, before.substring(split[0].length(), before.length() - split[1].length()), outR);
 	}
 	
+	/**	equalsPattern()
+	 * 
+	 * Given a String instance and certain patterns, this function
+	 * checks if the String instance exactly fulfills all the patterns
+	 * and retruns a boolean accordingly. 
+	 * 
+	 * @param	text		String		Instance to be investigated.
+	 * 	
+	 * @param	patterns	String[]	Patterns to be applied to text.
+	 * 
+	 */
 	private static boolean equalsPattern(String text, String patterns[]){
 		/* Patterns : 	l = lowercase
 		 * 				u = uppercase
@@ -239,6 +325,17 @@ public class PasswordSecurity {
 		return false;
 	}
 	
+	/**	equalsPattern()
+	 * 
+	 * Given a String instance and certain patterns, this function
+	 * checks if the String instance contains all the patterns and
+	 * retruns a boolean accordingly. 
+	 * 
+	 * @param	text		String		Instance to be investigated.
+	 * 	
+	 * @param	patterns	String[]	Patterns to be applied to text.
+	 * 
+	 */
 	private static boolean containsPattern(String text, String patterns[]){
 		/* Patterns : 	l = lowercase
 		 * 				u = uppercase
@@ -254,6 +351,13 @@ public class PasswordSecurity {
 		return false;
 	}
 	
+	/**	evaluateDistribution()
+	 * 
+	 * Empirical function to evaluate the distribution of lower/-upper case,
+	 * digits and symbols. This score goes in to the final evaluation of the
+	 * strength (or randomness) of a human chosen password.
+	 * 
+	 */
 	private static double evaluateDistribution(int[] array, int[] arg){
 		if (array.length < 2) return 0.0;
 		
@@ -281,7 +385,19 @@ public class PasswordSecurity {
 		
 		return 1+log(result);	
 	}
-	
+
+	/**	estimatePwStrength()
+	 * 
+	 * Function to evaluate the strength of a humanly chosen password.
+	 * This includes taking into account the length, investigating it
+	 * for patterns and for the use of lower-/upper case, digits and 
+	 * symbols. In the end the score is from 0 to infinite, while a
+	 * score around 80 should be a decent password and a score over
+	 * 100 a very strong one.
+	 *  
+	 * @param	password		String		Instance to be investigated.
+	 * 
+	 */
 	public static double estimatePwStrength(String password){
 		int size = password.length();
 		if ( size == 0 || password == null) return -1.0;
@@ -372,11 +488,35 @@ public class PasswordSecurity {
 		return scale*strength;
 	}
 	
+	/**	getStringOf()
+	 * 
+	 * Returns a String of repeating characters
+	 *  
+	 * @param	instance		String		Instance to be repeated.
+	 * 
+	 * @param	repetition		int			Number of repetitions of instance.
+	 * 
+	 */
 	public static String getStringOf(String instance, int repetition) {
 		if (repetition == 0) return "";
 		return new String(new char[repetition]).replace("\0", instance);
 	}
 	
+	/**	combineStringArrays()
+	 * 
+	 * Combines two String arrays. Each element of the second String will
+	 * be attached to each element of the first string in the output.
+	 * 
+	 * If the optional flag symmetric is true, all elements in the first
+	 * String will be as well attached to all elements of the second one.
+	 *  
+	 * @param	first		String[]		First string array.
+	 * 
+	 * @param	second		String[]		Second string array.
+	 * 
+	 * @param 	symmetric	boolean			(optional) Flag for symmetric combination
+	 * 
+	 */
 	public static String[] combineStringArrays(String[] first, String[] second){
 		return combineStringArrays(first, second, false);
 	}
@@ -412,6 +552,21 @@ public class PasswordSecurity {
 		return out;
 	}
 	
+	/**	getRandomPassword()
+	 * 
+	 * Returns a random password from a seed which can be chosen.
+	 *  
+	 * @param	size		int			Length of the password
+	 * 
+	 * @param	useSpace	boolean		Flag to include space in the seed.
+	 * 
+	 * @param	useNumbers	boolean		Flag to include numbers in the seed.
+	 * 
+	 * @param	useSymbols	boolean		Flag to include symbols in the seed.
+	 * 
+	 * @param	addchars	String		(optional) String of additional characters to add to seed.
+	 * 
+	 */
 	public static String getRandomPassword(int size, boolean useSpace, 
 			boolean useNumbers, boolean useSymbols, String addchars){
 		String grab = uppercase+lowercase;
@@ -429,6 +584,28 @@ public class PasswordSecurity {
 		return randomGrab(grab, size);
 	}
 	
+	public static String getRandomPassword(int size,  boolean useSpace, 
+			boolean useNumbers, boolean useSymbols){
+		return getRandomPassword(size, useSpace, useNumbers, useSymbols, "");
+	}
+	
+	/**	patternAnalysis()
+	 * 
+	 * Function to detect different patterns in a given String instance.
+	 * The character categories have to be given as well. Each character
+	 * thereby is categorised by symbol (0), number (1), uppercase (2) or
+	 * lowercase (4). The password has to be given as well converted into
+	 * an array of bytes, with each element corresponding to one character.
+	 *  
+	 * @param	password	String		Instance to be investigated.
+	 *  
+	 * @param	category	int[]		ii-th element describes the category for
+	 * 									the ii-th character of the password.
+	 * 
+	 * @param	PWDinBytes	byte[]		ii-th element describes the ii-th character
+	 * 									of the password converted into bytes.
+	 * 
+	 */
 	public static String[] patternAnalysis(String password, int category[], byte[] PWDinBytes) {
 		int size = password.length();
 		
@@ -688,6 +865,14 @@ public class PasswordSecurity {
 		return concate(Integer.toString(countNumbers), Patterns);
 	}
 	
+	/**	shiftOutRegex()
+	 * 
+	 * Converting special characters in a String for a regex expression.
+	 * E.g. ? -> \\?, | -> \\|, * -> \\*, etc.
+	 *  
+	 * @param	target		String		Instance to be changed.
+	 * 
+	 */
 	private static String shiftOutRegex(String target) {
 		return target.replace("\\", "\\\\").replace(".", "\\.").replace("{", "\\{").replace("}", "\\}").replace("[", "\\[")
 					.replace("]", "\\]").replace("(", "\\(").replace(")", "\\)").replace("^", "\\^")
@@ -695,6 +880,16 @@ public class PasswordSecurity {
 					.replace("?", "\\?");
 	}
 	
+	/**	getIndex()
+	 * 
+	 * Returns index of first occurance of a given String element in a 
+	 * given list or -1, if the element is not included in the list. 
+	 *  
+	 * @param	list		String[]	List to be searched.
+	 *  
+	 * @param	target		String		String instance to be looked for.
+	 * 
+	 */
 	private static int getIndex(String[] list, String target) {
 		if ( list == null || list.length == 0) return -1;
 		
@@ -705,6 +900,21 @@ public class PasswordSecurity {
 		return -1;
 	}
 	
+	/**	fill()
+	 * 
+	 * Given a String type instance, the routine returns the string filled
+	 * with a given instance to a defined length. E.g. given the String
+	 * tofill='ba', given integer length=6, and given String fillinstance 'na',
+	 * the function returns 'banana'
+	 *  index of first occurance of a given String element in a 
+	 * given list or -1, if the element is not included in the list. 
+	 *  
+	 * @param	tofill			String		Basis to be appended on.
+	 *  
+	 * @param	length			int			Length of return String instance.
+	 * 
+	 * @param	fillinstance	String		Instance used to fill the String.
+	 */
 	private static String fill(String tofill, int length, String fillinstance) {
 		if ( tofill == null || tofill.length() == 0 || length < 1) return "";
 		if ( fillinstance == null || fillinstance.length() == 0 ) return tofill;
@@ -717,6 +927,28 @@ public class PasswordSecurity {
 		return tofill.substring(0, length);
 	}
 	
+	/**	findPatterns()
+	 * 
+	 * Function to find patterns in a given String instance. The character 
+	 * categories have to be given as well. Each character
+	 * thereby is categorised by symbol (0), number (1), uppercase (2) or
+	 * lowercase (4). The password has to be given as well converted into
+	 * an array of bytes, with each element corresponding to one character.
+	 *  
+	 * @param	text		String		Instance to be investigated.
+	 *  
+	 * @param	cat			int[]		ii-th element describes the category for
+	 * 									the ii-th character of the input String text.
+	 * 
+	 * @param	bytePass	byte[]		ii-th element describes the ii-th character
+	 * 									of the input String text converted into bytes.
+	 * 
+	 * @param	startend	boolean		If flag is true, then the String instance is
+	 * 									investigated towards same start and end.
+	 * 									E.g. 123password123, ##appple## 
+	 * 									(start and is equal)
+	 * 
+	 */
 	private static String[] findPatterns(String text, int[] cat, byte[] bytePass, boolean startend) {
 		int size = text.length();
 		int ind = 0;
@@ -792,6 +1024,16 @@ public class PasswordSecurity {
 		return patt.split(devider);
 	}
 	
+	/**	concate()
+	 * 
+	 * Concates two boolean arrays, or a boolean array with a boolean scalar.
+	 * Second instance b will be appended to the first instance a in an array.
+	 *  
+	 * @param	a		boolean[]	First boolean array.
+	 * 
+	 * @param	b		boolean[]	Second boolean array (can as well be boolean b).
+	 * 
+	 */
 	private static boolean[] concate(boolean[] a, boolean[] b) {
 		if (a == null || a.length == 0) return b;
 		if (b == null || b.length == 0) return a;
@@ -819,6 +1061,24 @@ public class PasswordSecurity {
 		return out;
 	}
 	
+	/**	concate()
+	 * 
+	 * Concates two String arrays (or similar). As well allowed is to concate
+	 * one String with a String array. Second instance b will be appended to the
+	 * first instance a in an array. Optionally, in case of two String arrays only,
+	 * a position can be included to insert the second instance b at a certain
+	 * position in the array of the first instance a. Further, an optional flag
+	 * replace can be used to replace the element at the given position in array
+	 * of instance a while inserting instance b.
+	 *  
+	 * @param	a			String[]	First string array (can as well be String a).
+	 * 
+	 * @param	b			String[]	Second string array
+	 * 									(can as well be String b, but only if String[] a).
+	 * @param 	position	int			(Optional) position in the array a to insert array b
+	 *									
+	 * @param 	replace		boolean		(Optional) If true, replaces element at index position.
+	 */
 	private static String[] concate(String[] a, String[] b) {
 		if ( a == null || a.length == 0 ) return b;
 		if ( b == null || b.length == 0 ) return a;
@@ -836,7 +1096,7 @@ public class PasswordSecurity {
 		}
 		return out;
 	}
-	
+
 	private static String[] concate(String[] a, String b) {
 		if ( a == null || a.length == 0 ) return new String[] {b};
 		if ( b == null || b.length() == 0 ) return a;
@@ -849,7 +1109,7 @@ public class PasswordSecurity {
 		out[p0] = b;
 		return out;
 	}
-	
+
 	private static String[] concate(String a, String[] b) {
 		if ( a == null || a.length() == 0) return b;
 		if ( b == null || b.length == 0 ) return new String[] {a};
@@ -910,6 +1170,13 @@ public class PasswordSecurity {
 		return out;
 	}
 	
+	/** getBirthdayPatterns()
+	 * 
+	 * Returns a String array containing the regular expressions for all possible
+	 * number combinations which can be used to describe a Birthday date (or a similar
+	 * date of importance in that respect). 
+	 * 
+	 */
 	private static String[] getBirthdayPatterns() {
 		String bPYear[] = {"19[3-9]d", "20[0-2]d"};
 		String bPdaymonth3d[] = {"[0-2]dd", "30d", "31[13578]", "d1[0-2]"};
@@ -926,6 +1193,25 @@ public class PasswordSecurity {
 		return patString;
 	}
 	
+	/**	reducePasswordbyFilePatterns()
+	 * 
+	 * Reduces an original String instance password by excluding the given Patterns
+	 * criticals. Each String element of the String array criticals will be looked
+	 * for in password and excluded for the output of the routine. After excluding
+	 * a substring of password, the String instance password will be split at
+	 * the position of occurrence leading to two different String instances. Iterating
+	 * all elements of criticals results in a String array containing all fragments of
+	 * the original String instance password which do not include any of the Strings in
+	 * criticals. This resulting String array will be the output of this function.
+	 * E.g. Input : password = 'BAappleNAorangeNA', criticals = ['apple', 'orange']
+	 *  	Output: ['BA','NA','NA']
+	 *  
+	 * @param	password	String		String to be split.
+	 * 
+	 * @param	criticals	String[]	Array of Strings to be used as splitter for
+	 * 									the String instance password.
+	 * 
+	 */
 	private static String[] reducePasswordbyFilePatterns(String password, String[] criticals) {
 		if ( criticals == null || criticals.length == 0 ) return new String[] {password};
 
@@ -979,6 +1265,18 @@ public class PasswordSecurity {
 		return splitPassword;
 	}
 	
+	/**	contains()
+	 * 
+	 * Checks whether given input String array contains a given String instance
+	 * target. Returns boolean true if target is contained in input list. Else 
+	 * returns boolean false. 
+	 *  
+	 * @param	list		String[]	String array to be check for occurance of 
+	 * 									String instance target.
+	 * 
+	 * @param	target		String		String instance targeted in list.
+	 * 
+	 */
 	private static boolean contains(String[] list, String target) {
 		if ( list == null || list.length == 0) return false;
 		if ( target == null || target.length() == 0) return false;
@@ -1015,6 +1313,24 @@ public class PasswordSecurity {
  //   	System.out.println();
     }
 	
+	/**	getCriticalPatternsbyFile()
+	 * 
+	 * Checks given input String password whether it contains one of the String
+	 * instances listed in an external file with the name filename. Each line of
+	 * the file filename is taken as a String of which its occurance has to be
+	 * checked in the String instance password. In practice the external file
+	 * can contain frequently used passwords (e.g. 'banana' or 'password;) or
+	 * keyboard patterns (e.g. '1q2w3e' or 'asdf') which would reduce the security of
+	 * a password.
+	 * The output will be an array of Strings, each String corresponding to a
+	 * matching String instance of the external file.
+	 *  
+	 * @param	filename	String		Filename of the external file to be streamed.
+	 * 
+	 * @param	password	String		Instance to be checked for containing words from
+	 * 									the external file filename.
+	 * 
+	 */
 	private static String[] getCriticalPatternsbyFile(String filename, String password){
 		BufferedReader br = null;
 		FileReader fr = null;
@@ -1054,11 +1370,16 @@ public class PasswordSecurity {
 		return overlap.split(devider);
 	}
 	
-	public static String getRandomPassword(int size,  boolean useSpace, 
-			boolean useNumbers, boolean useSymbols){
-		return getRandomPassword(size, useSpace, useNumbers, useSymbols, "");
-	}
-	
+	/**	randomGrab()
+	 * 
+	 * Returns a random String containing randomly grabbed characters of given
+	 * input String instance grabString.
+	 *  
+	 * @param	grabString		String		Source/seed for the random String returned.
+	 * 
+	 * @param	size			int			Length of the random String to be returned.
+	 * 
+	 */
 	private static String randomGrab(String grabString, int size){
 		int grabSize = grabString.length();
 		String randString = "";

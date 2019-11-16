@@ -7,6 +7,13 @@ import javax.crypto.SecretKeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
+/**	class Hashing
+ * 
+ * This class contains all operations needed to create hash for a given data.
+ * The public function hash_password() is called with different input variables
+ * in order to create a hash in form of a hex-String.
+ * 
+ */
 public class Hashing {
 	private static final String branding_salt = "NaHCO_3";
 	
